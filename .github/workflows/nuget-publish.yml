@@ -7,6 +7,11 @@ on:
         description: Path to the .csproj file
         type: string
         required: true
+      version:
+        description: 'Package version (x.y.z), used for manual dispatch. If empty, extracted from tag.'
+        type: string
+        required: false
+        default: ''
     secrets:
       NUGET_API_KEY:
         required: true
@@ -24,9 +29,15 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
 
-      - name: Extract version from tag
+      - name: Extract version
         id: version
-        run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="${GITHUB_REF##*/}"
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Pack
         run: |
