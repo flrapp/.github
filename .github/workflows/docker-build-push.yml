@@ -11,8 +11,6 @@ on:
         description: 'Path to the Dockerfile, e.g. ./src/Flare.Api or .'
         type: string
         required: true
-    secrets:
-      inherit: true
 
 permissions:
   contents: read
