@@ -1,0 +1,50 @@
+name: Docker Build and Push
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        description: 'Full GHCR image name, e.g. ghcr.io/org/flare-api'
+        type: string
+        required: true
+      dockerfile-path:
+        description: 'Path to the Dockerfile, e.g. ./src/Flare.Api or .'
+        type: string
+        required: true
+    secrets:
+      inherit: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          # Tag format: release/x.y.z — extract x.y.z
+          VERSION="${GITHUB_REF#refs/tags/release/}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ inputs.dockerfile-path }}/Dockerfile
+          push: true
+          tags: |
+            ${{ inputs.image-name }}:${{ steps.version.outputs.version }}
+            ${{ inputs.image-name }}:latest
