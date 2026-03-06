@@ -1,0 +1,43 @@
+name: NuGet Publish
+
+on:
+  workflow_call:
+    inputs:
+      project-path:
+        description: Path to the .csproj file
+        type: string
+        required: true
+    secrets:
+      NUGET_API_KEY:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - name: Pack
+        run: |
+          dotnet pack ${{ inputs.project-path }} \
+            -c Release \
+            -p:PackageVersion=${{ steps.version.outputs.VERSION }} \
+            --output ./artifacts
+
+      - name: Push to NuGet
+        run: |
+          dotnet nuget push ./artifacts/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
