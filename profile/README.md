@@ -17,17 +17,11 @@ No third-party SaaS. No vendor lock-in. Full control.
 
 ---
 
-## 🚧 Quick Start
+## 📚 Documentation & Quick Start
 
-<pre>
-  / \__
- (    @\___    "Setup guide is coming, I promise! Woof!"
- /         O
-/   (_____/
-/_____/   U
-</pre>
+Everything you need to get started — installation, configuration, SDK setup, and API reference:
 
-> Quick Start is under construction. Explore the repositories below in the meantime.
+**[flrapp.gitbook.io/flrapp](https://flrapp.gitbook.io/flrapp/)**
 
 ---
 
@@ -69,21 +63,6 @@ No third-party SaaS. No vendor lock-in. Full control.
 | [flare-ui](https://github.com/flrapp/flare-ui) | 🖥 Admin Panel UI |
 | [flare-dotnet](https://github.com/flrapp/flare-dotnet) | 🟣 .NET SDK (OpenFeature) |
 | [flare-js](https://github.com/flrapp/flare-js) | 🟡 JavaScript / React SDK |
-
----
-
-## 📚 Documentation
-
-<pre>
-  /\_____/\
- /  o   o  \    "I'll write the docs... when I feel like it."
-( ==  ^  == )
- )         (
-(  _______  )
-(__(__)__(__)__)
-</pre>
-
-> Documentation is under construction.
 
 ---
 
